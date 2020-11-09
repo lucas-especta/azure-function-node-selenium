@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/azure-functions/python:2.0
+FROM docker pull mcr.microsoft.com/azure-functions/node:3.0-node12
 
 # 0. Install essential packages
 RUN apt-get update \
@@ -28,13 +28,10 @@ RUN LATEST=$(wget -q -O - http://chromedriver.storage.googleapis.com/LATEST_RELE
 
 ENV PATH="/usr/local/bin/chromedriver:${PATH}"
 
-# 3. Install selenium in Python
-RUN pip install -U selenium
-
-# 4. Finally, copy python code to image
+# 3. Finally, copy python code to image
 COPY . /home/site/wwwroot
 
-# 5. Install other packages in requirements.txt
+# 4. Install other packages in requirements.txt
 RUN cd /home/site/wwwroot && \
-    pip install -r requirements.txt
+    npm install
 
