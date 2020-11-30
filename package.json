@@ -1,0 +1,28 @@
+{
+  "name": "@produweb/SNWakeup",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "tsc",
+    "build:production": "npm run prestart && npm prune --production",
+    "watch": "tsc --w",
+    "prestart": "npm run build && func extensions install",
+    "start:host": "func start",
+    "start": "npm-run-all --parallel start:host watch",
+    "docker:build": "docker build --file ./Dockerfile.azure --tag produweb/snautomation:v1.0.0 .",
+    "docker:build:local": "docker build --file ./Dockerfile.local --force-rm --tag local/snautomation:v1.0.0 .",
+    "docker:run:local": "docker run -p:7071:80 --env-file .env local/snautomation:v1.0.0"
+  },
+  "description": "",
+  "devDependencies": {
+    "@azure/functions": "^1.0.1-beta1",
+    "@types/node": "^14.14.10",
+    "@types/selenium-webdriver": "^4.0.10",
+    "npm-run-all": "^4.1.5",
+    "typescript": "^4.1.2"
+  },
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "selenium-webdriver": "^4.0.0-alpha.7"
+  },
+  "license": "MIT"
+}

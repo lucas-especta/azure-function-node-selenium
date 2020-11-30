@@ -1,4 +1,4 @@
-FROM docker pull mcr.microsoft.com/azure-functions/node:3.0-node12
+FROM mcr.microsoft.com/azure-functions/node:3.0-node12
 
 # 0. Install essential packages
 RUN apt-get update \
@@ -28,8 +28,14 @@ RUN LATEST=$(wget -q -O - http://chromedriver.storage.googleapis.com/LATEST_RELE
 
 ENV PATH="/usr/local/bin/chromedriver:${PATH}"
 
+ENV AzureWebJobsScriptRoot=/home/site/wwwroot \
+    AzureFunctionsJobHost__Logging__Console__IsEnabled=true
+
 # 3. Finally, copy python code to image
-COPY . /home/site/wwwroot
+COPY ./dist /home/site/wwwroot
+COPY ./functionSNWakeup /home/site/wwwroot
+COPY ./host.json /home/site/wwwroot
+COPY ./package.json
 
 # 4. Install other packages in requirements.txt
 RUN cd /home/site/wwwroot && \
